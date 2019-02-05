@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// todo lo que lleve este script para que funcione correctamente debe de tener colliders tipo triggers
+/// <summary>
+/// clase encargada de aplicar efectos a todos los diferentes tipos de proyectiles, y darles un comportamiento especifico segun las variables que cada proyectil tenga.
+/// </summary>
 public class BulletClass : MonoBehaviour
 {
-    // si se puede elimina con otro proyectil... no se puede eliminar con el piso.
     public bool isDestructible;
     public bool onlyDestroyedByTime;
     public bool afectedByGravity;
@@ -18,7 +19,6 @@ public class BulletClass : MonoBehaviour
 
     public string allyCharacterTag;
 
-    // aqui le debo poner la condicional que no reaccione con otras balas de npcs
 
 
 
@@ -26,7 +26,6 @@ public class BulletClass : MonoBehaviour
 
     void  OnEnable()
     {
-
         if (GetComponent<Collider>().attachedRigidbody && afectedByGravity == true)
             GetComponent<Collider>().attachedRigidbody.useGravity = true;
         
@@ -46,7 +45,6 @@ public class BulletClass : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-       
         if (collision.gameObject.tag == "EnemyBulletTag")
         {
             Destroy(this.gameObject);
@@ -67,8 +65,7 @@ public class BulletClass : MonoBehaviour
             {
                 Destroy(this.gameObject);
             }
-        }
-        
+        }   
     }
 
     void OnTriggerEnter(Collider other)

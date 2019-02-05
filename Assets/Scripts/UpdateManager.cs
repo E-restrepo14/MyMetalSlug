@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+///  unica clase encargada de realizar verificaciones por medio del update, llamar procesos de otros scripts, y proveer variables.
+/// </summary>
 public class UpdateManager : MonoBehaviour
 {
     public bool jump = false;
@@ -104,9 +105,4 @@ public class UpdateManager : MonoBehaviour
     {
         jump = false;
     }
-
-    //public void Morir()
-    //{
-    //    myPlayerController.StartCoroutine("Die");
-    //}
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 /// <summary>
-///  calse encargada de modificar todo lo que es la interfaz de usuario
+///  calse encargada de modificar la interfaz de usuario. y llamar los cambios de estado de juego del GameStateManager
 /// </summary>
 public class UiManager : MonoBehaviour
 {

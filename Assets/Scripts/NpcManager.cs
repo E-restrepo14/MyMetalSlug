@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// singleton con referencias de todos los npc en escena... tiene la funcion de ordenar a cada uno de estos, 
+/// el realizar una verificacion... esta es llamada cada frame por el update manager
+/// </summary>
 public class NpcManager : MonoBehaviour
 {
     public static NpcManager instance;

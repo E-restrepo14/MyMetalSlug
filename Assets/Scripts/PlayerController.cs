@@ -1,7 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// clase encargada de guardar y proveer y ejecutar metodos y variables, segun las verificaciones del update manager  
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private bool isGrounded = false;
@@ -35,6 +37,11 @@ public class PlayerController : MonoBehaviour
         StartCoroutine("PlayerStab");
     }
 
+    /// <summary>
+    /// este void es utilizado para detectar cuando el personaje principal se encuentra 
+    /// en el aire o ha aterrizado despues de saltar o caer
+    /// </summary>
+    /// <param name="collision"> collider que ha colisionado con Playercontroller </param>
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("GroundTag"))
@@ -44,6 +51,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo utilizado para detectar cuando entra en contacto con un proyectil con collider tipo trigger
+    /// </summary>
+    /// <param name="other">collider tipo trigger que ha colisionado con Playercontroller </param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("EnemyBulletTag"))
@@ -53,6 +64,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo que es llamado cada vez que el player controller entra ne contacto con un proyectil enemigo con collider tipo trigger
+    /// </summary>
     public void GetDamage()
     {    
         if (!GameManager.instance.inmunityShield.activeSelf && playerLife > 0)
@@ -66,7 +80,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // este metodo se llamará desde el UpdateManager y se ejecutará cada frame
+
+    /// <summary>
+    /// metodo consistente en verificar hacia que lado del personaje se le está ordenando moverse.
+    /// este metodo se llama desde el UpdateManager y se ejecutará cada frame
+    /// </summary>
     public void VerifyImputs()
     {
         if (GameManager.instance.vaAMorir == false)
@@ -84,14 +102,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// proceso para verificar si segun el update manager, se debe ordenar al player que apunte el arma hacia arriba
+    /// </summary>
     public void VerifyAim()
     {
-        //if (UpdateManager.instance.sIsPressed == true)
-        //{
-          //  return;
-        //}
-      //  else // este else se ejecutará mientras la tecla S no este presionada
-      //  {
             if (UpdateManager.instance.pointUp)
             {
                 if (isPointingUp == false)
@@ -125,9 +140,11 @@ public class PlayerController : MonoBehaviour
                     isPointingDown = false;
                 }
             }
-        //}
     }
 
+    /// <summary>
+    /// proceso para verificar si segun el update manager, se ha presionado la tecla S
+    /// </summary>
     public void VerifySComand()
     {
         if (UpdateManager.instance.pointUp == true)
@@ -178,8 +195,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-    // metodo consistente en ubicar al personaje en su spawnpoint
+    /// <summary>
+    ///  metodo consistente en ubicar al personaje en su spawnpoint
+    /// </summary>
     public void Spawn()
     {
         transform.Translate(new Vector3(0, 8, 0));
@@ -187,7 +205,9 @@ public class PlayerController : MonoBehaviour
         playerLife = 1;
     }
 
-    // metodo consistente en rotar al personaje 180°
+    /// <summary>
+    /// metodo consistente en rotar al personaje 180°
+    /// </summary>
     private void Flip()
     {
         miraALaDerecha = !miraALaDerecha;
@@ -205,13 +225,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // metodo consistente en darle un gira al arma
+    /// <summary>
+    /// metodo consistente en darle un giro al arma
+    /// </summary>
+    /// <param name="rotation"> direccion hacia la cual se desea rotar el arma del player</param>
     public void PointGun(Vector3 rotation)
     {
         head.transform.Rotate(rotation);
     }
 
-    // metodo consistente en verificar si puede saltar el personaje y ordenar que lo haga
+    /// <summary>
+    /// metodo consistente en verificar si puede saltar el personaje y ordenar que lo haga
+    /// </summary>
     public void Jump()
     {
         if (GameManager.instance.vaAMorir == false)
@@ -224,33 +249,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo encargado de interrumpir la altura del salto al liberar la tecla space en el UpdateManager
+    /// </summary>
     public void StopJump()
     {
         rb.AddForce(new Vector2(0f, -powerOfJumpStop));
     }
 
-    // metodo que consiste en bajar la cabeza y el arma del personaje
+    /// <summary>
+    /// metodo que consiste en bajar la cabeza y el arma del personaje, haciendo que se agache
+    /// </summary>
     public void Crouch()
     {
         head.transform.position += new Vector3(0, -0.6f, 0);
     }
 
-    // metodo que consiste en subir la cabeza y el arma del personaje
+    /// <summary>
+    /// metodo que consiste en subir la cabeza y el arma del personaje, haciendo que se levante
+    /// </summary>
     public void StandUp()
     {
         head.transform.position += new Vector3(0, 0.6f, 0);
     }
 
-    // metodo consistente en instanciar un proyectil en una dirección
-    public void Shoot()
-    {
-        if (Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            CombatSystemManager.instance.FireBullet(head);
-        }
-    }
 
+    /// <summary>
+    /// metodo consistente en activar un gameobject, darle una rotacion durante un tiempo y desactivarlo
+    /// </summary>
+    /// <returns> retorna una espera de 0 segundos </returns>
     public IEnumerator PlayerStab()
     {
         if (isStabing == false)
@@ -267,6 +294,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo consistente en instanciar llamar cada cierto tiempo la instanciacion de un prefab de la clase combatsystemmanager
+    /// </summary>
+    public void Shoot()
+    {
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            CombatSystemManager.instance.FireBullet(head);
+        }
+    }
+
+    /// <summary>
+    /// metodo consistente en instanciar llamar cada cierto tiempo la instanciacion de otro prefab distinto de la clase combatsystemmanager.
+    /// </summary>
     public void ThrowGrenade()
     {
         if (Time.time > nextFire)

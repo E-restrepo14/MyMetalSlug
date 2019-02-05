@@ -1,15 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// clase encargada de aplicar procesos al PlayerController y manejar elementos como el time scale, el scenemanagement y el application quit
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject head;
     [SerializeField] private GameObject feets;
-
     public GameObject inmunityShield;
-
     public bool vaAMorir = false;
 
 
@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // esta coroutina se encarga de hacer parpadear al personaje por un tiempo pero luego llama la coroutina perder() (almacenada en uimanager)
     public IEnumerator Die()
     {
             
@@ -44,10 +43,8 @@ public class GameManager : MonoBehaviour
             {
                 feets.GetComponent<Renderer>().enabled = !feets.GetComponent<Renderer>().enabled;
                 head.GetComponent<Renderer>().enabled = !head.GetComponent<Renderer>().enabled;
-
                 yield return new WaitForSeconds(0.1f);
             }
-
             UiManager.instance.StartCoroutine("Perder");
         }
         else
@@ -58,10 +55,8 @@ public class GameManager : MonoBehaviour
     {
         vaAMorir = false;
         UpdateManager.instance.myPlayerController.Spawn();
-
         if (inmunityShield != null)
             inmunityShield.SetActive(true);
-
         for (int i = 0; i < 60; i++)
         {
             feets.GetComponent<Renderer>().enabled = !feets.GetComponent<Renderer>().enabled;
@@ -69,7 +64,6 @@ public class GameManager : MonoBehaviour
             inmunityShield.transform.Rotate(0, 20, 0);
             yield return new WaitForSeconds(0.1f);
         }
-
         inmunityShield.SetActive(false);
     }
 

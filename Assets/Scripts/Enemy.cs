@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// clase encargada de llamar ciertas acciones y dar un comportamiento caracteristico a cada una del as variables de enemigo que existen en el juego
+/// </summary>
 public class Enemy : MonoBehaviour
 {
 
@@ -36,8 +39,11 @@ public class Enemy : MonoBehaviour
     float enemyNextFire;
     public float enemyFireRate;
 
-    // este metodo toma todos los colliders en una locacion y en un radio especifico 
-    // y los almacena en un array, (esto se debe llamar por un tercero y ejecutar cada frame) 
+    /// <summary>
+    /// este metodo toma todos los colliders en una locacion y en un radio especifico 
+    /// y los almacena en un array, (esto se debe llamar por un tercero y ejecutar cada frame) 
+    /// </summary>
+    /// <param name="center"> otorga una posicion a la cual hacer un barrido y recoleccion de todos los colliders cercanos </param>
     public void VerificarCampoDeVision(Vector3 center)
     {
         CollidersDetectados = Physics.OverlapSphere(center, radius);
@@ -72,7 +78,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // verifica que entre los collider detectados, el target sea quien tenga el tag Player
+    /// <summary>
+    /// verifica que entre los collider detectados, el target sea quien tenga el tag Playe
+    /// </summary>
     void ElegirTarget()
     {
         foreach (Collider coll in CollidersDetectados)
@@ -140,7 +148,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    //metodo consistente en dirigirse hacia el jugador
+    /// <summary>
+    /// metodo consistente en dirigirse hacia el jugador
+    /// </summary>
     public void Caminar()
     {
         enemyDirection = (target.transform.position.x - this.transform.position.x);
@@ -149,7 +159,9 @@ public class Enemy : MonoBehaviour
         transform.Translate(enemyDirection, 0,0,Space.World);
     }
 
-    // metodo consistente en hacer agachar al soldado enemigo
+    /// <summary>
+    /// metodo consistente en hacer agachar al soldado enemigo
+    /// </summary>
     public void Cubrirse()
     {
         if (isCovered == false)
@@ -159,13 +171,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo consistente en hacer girar al soldado enemigo media vuelta
+    /// </summary>
     public void Flip()
     {
         transform.Rotate(0, 180f, 0);
     }
 
-  
-    // metodo consistente en hacer saltar al soldado y apuñalar
+
+    /// <summary>
+    /// metodo consistente en hacer saltar al soldado y posteriormente apuñalar
+    /// </summary>
+    /// <returns> retorna un tiempo de espera de 0.1 segundos </returns>
     public IEnumerator Jump()
     {
 
@@ -193,7 +211,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    //metodo consistente en verificar hacia que lado está el jugador y girarse hacia el
+    /// <summary>
+    /// metodo consistente en verificar hacia que lado está el jugador y girarse hacia el
+    /// </summary>
     public void LookAtTarget()
     {
         if (enemyDirection >= 0)
@@ -216,6 +236,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo consistente en hacer daño al player si este se detecta dentro de su rango de daño cuando hizo el llamado a apuñalar
+    /// </summary>
     public void Stab()
     {
         if (hasKnife == true && target != null)
@@ -238,6 +261,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo para verificar cuanto daño recibir dependiendo del tag del collider que lo ingrese
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("BulletTag"))
@@ -255,6 +282,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// metodo consistente en dan un efecto de muerte al personaje enemigo
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator EnemyDie()
     {
         GameObject enemyFeets = transform.GetChild(0).gameObject;
@@ -270,8 +301,10 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-// metodo consistente en hacer apuntar el arma del soldado enemigo hacia el personaje
-public void PointBazooka()
+    /// <summary>
+    /// metodo consistente en hacer apuntar el arma del soldado enemigo hacia el personaje
+    /// </summary>
+    public void PointBazooka()
     {
         if(enemyWeapon != null)
         {
